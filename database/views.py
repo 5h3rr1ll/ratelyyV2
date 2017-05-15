@@ -36,7 +36,7 @@ class Database(ListView):
 
         return  context
 
-def submit_color_search_from_ajax(request):
+def submit_search_from_ajax(request):
     """
     Processes a search request, ignoring any where less than two
     characters are provided. The search text is both trimmed and

@@ -56,7 +56,7 @@
             var MIN_SEARCH_CHARS = {{ MIN_SEARCH_CHARS }};
 
             //The url to submit the search form. From color_liker.urls
-            var SUBMIT_URL = "{% url 'color_list' %}";
+            var SUBMIT_URL = "{% url 'database:search' %}";
 
             /*
                the url to toggle the like. From color_liker.urls
@@ -65,7 +65,7 @@
                bogus one, then immediately lop it off (along with the
                ending '/'). It is re-appended by the JavaScript.
             */
-            var LIKE_URL_PRE_ID = "{% url 'toggle_color_like' color_id='999999999' %}"
+            var LIKE_URL_PRE_ID = "{% url 'database:toggle_color_like' color_id='999999999' %}"
             LIKE_URL_PRE_ID = LIKE_URL_PRE_ID.substring(0, LIKE_URL_PRE_ID.length - "999999999/".length);
          </script>
          <script type='text/javascript' src="{% static 'js/color_ajax_search.js' %}"></script>
