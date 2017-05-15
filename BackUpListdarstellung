@@ -1,0 +1,48 @@
+
+# Der folgende Code gehört in die Datei brands_list.html und stellt
+# eine List der Tabelle Brands dar. Position war Zeile 98, direkt hinter
+# dem Div       <div class="search_section">
+
+
+<!-- <div class="content_section">
+   <h1>Brands Likenatorizer</h1>
+
+   {% if  colors.count == 0 %}
+      <p><i>There are no colors in the database.</i></p>
+   {% else %}
+      <table>
+         <tr>
+            <th>Brands</th> -->
+            <!-- <th>Favorite?</th> -->
+         <!-- </tr> -->
+            <!--
+               The yes/no like button is contained in the third column.
+               The stylesheet eliminates the button's border and expands
+               its width and height to 100%, so it fills its entire
+               container: the table cell. It therefore appears to *be*
+               the table cell.
+
+               The table cell is in this main template, the button in
+               it, is in the "include"d sub-template. The button
+               sub-template is used by the below for-loop, and also by
+               the toggle_color_like view, which is called by Ajax.
+
+               Ajax calls Django, which renders the sub-template and
+               feeds it back to Ajax, which then replaces the current
+               button/sub-template with the new one.
+
+               (The data-color_id is how the id is passed to JQuery. See
+               http://api.jquery.com/data/ )
+            -->
+         <!-- {% for  color in colors %} {# No colon after "colors" #}
+            <tr>
+               <td >{{ color.name }}</td> -->
+               <!-- <td class="td__color_name">{{ color.name }}</td> -->
+               <!-- <td id="toggle_color_like_cell_{{ color.id }}" class="td__toggle_color_like_button" data-color_id="{{ color.id }}">
+                  {% include "database/color_like_link__html_snippet.txt" %}
+               </td> -->
+            <!-- </tr>
+         {% endfor %}
+      </table>
+   {% endif %} -->
+<!-- </div> -->

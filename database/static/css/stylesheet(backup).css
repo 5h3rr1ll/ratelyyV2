@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script|Gloria+Hallelujah|Leckerli+One|Lobster|Lobster+Two|Pacifico|Sacramento|Satisfy');
+@font-face {
+  font-family: 'Pacifico', cursive;
+  font-family: 'Lobster', cursive;
+  font-family: 'Sacramento', cursive;
+  font-family: 'Dancing Script', cursive;
+}
+
+#ratelyy{
+  font-family: "Sacramento";
+  font-size: 10em;
+}
+
+.parent {
+  text-align: center;
+  border: 10px;
+  margin-top: 5em;
+  margin-right: auto;
+  color: #fff;
+  font-family: 'Lato', Arial, sans-serif;
+
+}
+
+.search_section  {
+   /* float: left; */
+}
+.content_section  {
+   float: left;
+}
+
+input[type="text"] {
+    width: 27em;
+    height: 3em;
+    text-align: center;
+}

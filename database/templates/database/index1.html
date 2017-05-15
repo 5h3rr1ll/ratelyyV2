@@ -1,0 +1,102 @@
+{% comment %}
+   humanize:
+      For the "apnumber" filter, to display "two" instead of
+      "2". Requries 'django.contrib.humanize' in INSTALLED_APPS
+
+   static:
+      To access the public static file directory, without having to hard
+      code urls.
+{% endcomment %}
+{% load humanize %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+     {% block head %}
+      <title> {% block Title %} ratelyy {% endblock %} </title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="viewport" content="width=device-width"/>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+  		<link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}">
+  		<link rel="stylesheet" type="text/css" href="{% static 'css/component.css'%}">
+      <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+  		<script src="{% static 'js/modernizr.custom.js' %}"></script>
+      {% endblock %}
+   </head>
+<body>
+  {% block body %}
+
+  <!-- Menüleiste -->
+  <div class="container">
+    <ul id="gn-menu" class="gn-menu-main">
+      </li>
+      <li><a href="#">Datenbank</a></li>
+      <li><a target="_blank" class="codrops-icon codrops-icon-prev" href="http://www.Sherrill.de"><span>The Creator</span></a></li>
+      <li><a class="codrops-icon codrops-icon-drop" href="{% url "admin:index" %}"><span>Admin</span></a></li>
+    </ul>
+
+
+
+    <!-- SuchFeld -->
+    <header>
+      <div class="parent">
+        <div id="ratelyy">ratelyy</div>
+        <input placeholder="Nestle Marke" type="text" id="search" name="search_text"/>
+        <p>(Requires {{ MIN_SEARCH_CHARS|apnumber }} or more characters)</p>
+        <div id="color_search_results"></div>
+      </div>
+         <!--
+            The form is submitted on every key press ("keyup") to the ajax
+            function. If the number of characters is greater than
+            MIN_SEARCH_CHARS, then it is submitted to the Django view. Django
+            then renders the sub-template
+
+            color_search_results__html_snippet.txt
+
+            whose output is fed back to the ajax function. Ajax then populates
+            the rendered sub-template into the below div.
+
+            This no longer needs to be a form since the JavaScript directly
+            reads both fields (that is, it attaches event listeners to them,
+            which automatically react to key-presses). To be clearer, I've
+            added "color_" to the beginning of the text field's id.
+
+            Notes:
+               - csrf_token-s are not required in get requests.
+               - Only because the view expects a GET request, the search may
+               be directly tested with
+                  http://my.website/color_liker/search?search=bl -->
+    </header>
+  </div>
+
+   <script type='text/javascript' src="{% static 'js/jquery-3.2.1.js' %}"></script>
+   <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+   <script language="javascript">
+      /*
+         Before our JavaScript can be imported, the following JavaScript
+         variables need to be set from Django variables. While these
+         values could be hard-coded into the JavaScript, this allows
+         them to be centrally located.
+      */
+      //From color_liker.views.MIN_SEARCH_CHARS
+      var MIN_SEARCH_CHARS = {{ MIN_SEARCH_CHARS }};
+
+      //The url to submit the search form. From color_liker.urls
+      var SUBMIT_URL = "{% url 'color_list' %}";
+
+      /*
+         the url to toggle the like. From color_liker.urls
+
+         Since an id must be provided to the Django url, give it a
+         bogus one, then immediately lop it off (along with the
+         ending '/'). It is re-appended by the JavaScript.
+      */
+      var LIKE_URL_PRE_ID = "{% url 'toggle_color_like' color_id='999999999' %}"
+      LIKE_URL_PRE_ID = LIKE_URL_PRE_ID.substring(0, LIKE_URL_PRE_ID.length - "999999999/".length);
+   </script>
+   <script type='text/javascript' src="{% static 'js/color_ajax_search.js' %}"></script>
+   <script type='text/javascript' src="{% static 'js/color_ajax_main.js' %}"></script>
+   {% endblock %}
+</body></html>

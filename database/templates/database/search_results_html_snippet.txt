@@ -1,0 +1,20 @@
+{% if  search_text|length >= MIN_SEARCH_CHARS %}
+   <p><b>Suche nach &quot;<code>{{ search_text }}</code>&quot;:</b>
+   {% if  search_results.count > 0 or search_results2.count > 0 or search_results3.count > 0 %}
+      </p>
+      <ul>
+        <!-- Aus irgendeinem Grund muss durch "search_results" interiert werden, KP warum! -->
+         {% for  searchresult in search_results %} {# No colon after "search_results" #}
+            <li><a target="_blank" href="#"> {{ searchresult.name }} </a></li>
+         {% endfor %}
+         {% for  searchresult in search_results2 %} {# No colon after "search_results" #}
+            <li><a target="_blank" href="https://www.google.de/?gws_rd=ssl#q={{ searchresult.name }}">{{ searchresult.name }}</a></li>
+         {% endfor %}
+         {% for  searchresult in search_results3 %} {# No colon after "search_results" #}
+            <li><a target="_blank" href="https://www.google.de/?gws_rd=ssl#q=sherrill{{ searchresult.name }}">{{ searchresult.name }}</a></li>
+         {% endfor %}
+      </ul>
+   {% else %}
+      <i>Sorry, nichts gefunden.</i></p>
+   {% endif %}
+{% endif %}
