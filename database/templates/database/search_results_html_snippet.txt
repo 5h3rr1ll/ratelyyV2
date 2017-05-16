@@ -5,7 +5,7 @@
       <ul>
         <!-- Aus irgendeinem Grund muss durch "search_results" interiert werden, KP warum! -->
          {% for  searchresult in search_results %} {# No colon after "search_results" #}
-            <li><a target="_blank" href="{% url "database:BrandDetails" brand_id=searchresult.id %}"> {{ searchresult.name }} </a></li>
+            <li><a target="_self" href="{% url "database:BrandDetails" brand_id=searchresult.id %}"> {{ searchresult.name }} </a></li>
          {% endfor %}
          {% for  searchresult in search_results2 %} {# No colon after "search_results" #}
             <li><a target="_blank" href="https://www.google.de/?gws_rd=ssl#q={{ searchresult.name }}">{{ searchresult.name }}</a></li>
