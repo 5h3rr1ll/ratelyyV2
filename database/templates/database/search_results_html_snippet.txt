@@ -11,7 +11,7 @@
             <li><a target="_blank" href="https://www.google.de/?gws_rd=ssl#q={{ searchresult.name }}">{{ searchresult.name }}</a></li>
          {% endfor %}
          {% for  searchresult in search_results3 %} {# No colon after "search_results" #}
-            <li><a target="_blank" href="https://www.google.de/?gws_rd=ssl#q=sherrill{{ searchresult.name }}">{{ searchresult.name }}</a></li>
+            <li><a target="_blank" href="https://www.google.de/?gws_rd=ssl#q={{ searchresult.name }}">{{ searchresult.name }}</a></li>
          {% endfor %}
       </ul>
    {% else %}
