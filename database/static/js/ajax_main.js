@@ -56,6 +56,6 @@ $(document).ready(function()  {
     would attach a *second* listener to every button, meaning each
     click would be processed twice.
    */
-  $('.td__toggle_color_like_button').click(_.debounce(processLike,
+  $('a').click(_.debounce(processDetails,
       MILLS_TO_IGNORE_LIKES, true));
 });

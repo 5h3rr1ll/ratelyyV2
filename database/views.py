@@ -14,7 +14,7 @@ class Database(ListView):
     a table with only one column.
     """
     model = Brands
-    context_object_name = "colors"
+    context_object_name = "allResults"
     template_name = "database/index.html"
 
     def dispatch(self, request, *args, **kwargs):
@@ -22,7 +22,8 @@ class Database(ListView):
 
     def get_queryset(self):
         """
-        This returns the all colors, for display in the main table.
+        This returns the all entries of concernsm, companies and brands, for
+        display in the main table.
 
         The search result query set, if any, is passed as context.
         """
@@ -69,8 +70,8 @@ def submit_search_from_ajax(request):
         # Ergbenis für Treffer in Tabelle Brands
         brand_query = Brands.objects.filter(name__contains=search_text)
         #Ergebenis für Treffer in Tabelle Konzerne
-        search_results2 = Concerns.objects.filter(name__contains=search_text)
-        search_results3 = Companies.objects.filter(name__contains=search_text)
+        concern_query = Concerns.objects.filter(name__contains=search_text)
+        company_query = Companies.objects.filter(name__contains=search_text)
     #print('search_text="' + search_text + '", results=' + str(search_results))
 
     # im Jinja wird der Key des Dictionary's eingetragen, sodass der Value dann
@@ -79,9 +80,10 @@ def submit_search_from_ajax(request):
     context = {
         "search_text": search_text,
         "MIN_SEARCH_CHARS": MIN_SEARCH_CHARS,
+        #der Begr
         "search_results": brand_query,
-        "search_results2": search_results2,
-        "search_results3": search_results3,
+        "concerns": concern_query,
+        "companies": company_query,
     };
 
     return render_to_response("database/search_results_html_snippet.txt",

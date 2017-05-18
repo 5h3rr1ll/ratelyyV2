@@ -18,7 +18,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet.css' %}">
-    <title> ratelyy </title>
+    <title> {% block title %} ratelyy {% endblock %} </title>
   </head>
 
   <body>
@@ -40,7 +40,7 @@
       </div>
       <div id="Ergbenisbereich">
         <div id="Ergebnisliste">
-          <div id="color_search_results"></div>
+          <div id="search_results"></div>
         </div>
 
          <script type='text/javascript' src="{% static 'js/jquery-3.2.1.js' %}"></script>
@@ -68,18 +68,17 @@
             var LIKE_URL_PRE_ID = "{% url 'database:toggle_color_like' color_id='999999999' %}"
             LIKE_URL_PRE_ID = LIKE_URL_PRE_ID.substring(0, LIKE_URL_PRE_ID.length - "999999999/".length);
          </script>
-         <script type='text/javascript' src="{% static 'js/color_ajax_search.js' %}"></script>
-         <script type='text/javascript' src="{% static 'js/color_ajax_main.js' %}"></script>
+         <script type='text/javascript' src="{% static 'js/ajax_search.js' %}"></script>
+         <script type='text/javascript' src="{% static 'js/ajax_main.js' %}"></script>
         </div>
         <div id="Detailansicht">
-          {% block details %}
-
-          {% endblock %}
+          {% include "database/details.html" %}
         </div>
       </div>
     </div>
-    <script type='text/javascript' src="{% static 'js/color_ajax_search.js' %}"></script>
-    <script type='text/javascript' src="{% static 'js/color_ajax_main.js' %}"></script>
+    <script type='text/javascript' src="{% static 'js/ajax_search.js' %}"></script>
+    <script type='text/javascript' src="{% static 'js/ajax_details.js' %}"></script>
+    <script type='text/javascript' src="{% static 'js/ajax_main.js' %}"></script>
   {% endblock %}
   </body>
 </html>

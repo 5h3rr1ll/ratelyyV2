@@ -12,7 +12,7 @@ var processSearch = function()  {
 
   if(searchText.length < MIN_SEARCH_CHARS)  {
     //Too short. Ignore the submission, and erase any current results.
-    $('#color_search_results').html("");
+    $('#search_results').html("");
 
   }  else  {
     //There are at least two characters. Execute the search.
@@ -20,7 +20,7 @@ var processSearch = function()  {
     var processServerResponse = function(sersverResponse_data, textStatus_ignored,
                         jqXHR_ignored)  {
       //alert("sersverResponse_data='" + sersverResponse_data + "', textStatus_ignored='" + textStatus_ignored + "', jqXHR_ignored='" + jqXHR_ignored + "'");
-      $('#color_search_results').html(sersverResponse_data);
+      $('#search_results').html(sersverResponse_data);
     }
 
     var config = {
