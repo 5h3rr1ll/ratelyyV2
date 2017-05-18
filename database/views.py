@@ -101,6 +101,27 @@ def BrandDetails(request, brand_id):
     return render_to_response("database/details.html", context)
 
 
+def BrandDetails(request, brand_id):
+    """Toggle "details" for a single brand, then refresh the databse page."""
+    brand = None
+    try:
+        #There's only one object with this id, but this returns a list
+        #of length one. Get the first (index 0)
+        brand = Brands.objects.get(id=brand_id)
+    except Brands.DoesNotExist as e:
+        raise  ValueError("Unknown brand.id=" + str(brand_id) + ". Original error: " + str(e))
+
+    context = {
+        "brand_id": brand.id,
+        "brand_name": brand.name,
+        "brand_pic": brand.img,
+    }
+
+    #Render the just-clicked-on brand-link.
+    return  render_to_response("database/details.html",
+                           context)
+
+
 def toggle_color_like(request, color_id):
     """Toggle "like" for a single color, then refresh the color-list page."""
     color = None
