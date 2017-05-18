@@ -87,8 +87,18 @@ def submit_search_from_ajax(request):
     return render_to_response("database/search_results_html_snippet.txt",
                                context)
 
-def details(request, id):
-    pass
+def BrandDetails(request, brand_id):
+    brand = Brands.objects.get(id=brand_id)
+    brand_name = brand.name
+    brand_pic = brand.img
+
+    context = {
+        "brand_id": brand.id,
+        "brand_name": brand.name,
+        "brand_pic": brand.img,
+    }
+
+    return render_to_response("database/details.html", context)
 
 
 def toggle_color_like(request, color_id):

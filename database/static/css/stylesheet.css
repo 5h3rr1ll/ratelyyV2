@@ -29,6 +29,11 @@ h1 {
   font-family: "Sacramento";
 }
 
+#name a {
+  color: white;
+  text-decoration: none;
+}
+
 input[type="text"] {
     width: 27em;
     height: 3em;

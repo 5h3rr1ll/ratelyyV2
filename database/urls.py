@@ -11,4 +11,5 @@ urlpatterns = [
     url(r"^$", views.Database.as_view(), name="database"), #hieß vorher name="color_list"
     url(r"^like_color_(?P<color_id>\d+)/$", views.toggle_color_like, name="toggle_color_like"),# hieß vorher: name="toggle_color_like"
     url(r"^search/$", views.submit_search_from_ajax, name="search"), # hieß vorher: name="color_list"
+    url(r"^details/(?P<brand_id>\d+)/$", views.BrandDetails, name="BrandDetails"),
 ]
