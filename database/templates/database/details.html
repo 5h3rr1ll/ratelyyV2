@@ -2,8 +2,12 @@
 
 {% block details %}
   <div id="DetailsContent">
-    Brand ID: {{brand_id}}<br>
-    Markenname: {{brand_name}}<br>
-    <img src="{{brand_pic}}"></img>
-  </di>
+    <img src="{{brand_pic}}"></img><br>
+    Markenname: {{ brand_name }}<br>
+    Unternehmen: {{ brand_company }}<br>
+    Konzern: {{ brand_concern }}<br>
+    Fair: {% if brand_fair > 0 %}Ja{% endif %}Nein<br>
+    Öklogisch: {% if brand_eco > 0 %}Ja{% endif %}Nein<br>
+    <h3><a href="http://localhost:8000/database/"> Neue Suche? Einfach hier klicken </a></h3>
+  </div>
 {% endblock %}

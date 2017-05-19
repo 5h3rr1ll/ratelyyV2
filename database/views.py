@@ -70,7 +70,9 @@ def submit_search_from_ajax(request):
         brand_query = Brands.objects.filter(name__contains=search_text)
         #Ergebenis für Treffer in Tabelle Konzerne
         search_results2 = Concerns.objects.filter(name__contains=search_text)
+        #Ergebenis für Treffer in Tabelle Unternehmen
         search_results3 = Companies.objects.filter(name__contains=search_text)
+
     #print('search_text="' + search_text + '", results=' + str(search_results))
 
     # im Jinja wird der Key des Dictionary's eingetragen, sodass der Value dann
@@ -91,11 +93,19 @@ def BrandDetails(request, brand_id):
     brand = Brands.objects.get(id=brand_id)
     brand_name = brand.name
     brand_pic = brand.img
+    brand_concern = Concerns.objects.get(id=brand.concern_id).name
+    brand_company = Companies.objects.filter(id=brand.company_id)
+    brand_fair = brand.fair
+    brand_eco = brand.eco
 
     context = {
         "brand_id": brand.id,
         "brand_name": brand.name,
         "brand_pic": brand.img,
+        "brand_company": brand_company,
+        "brand_concern": brand_concern,
+        "brand_fair": brand_fair,
+        "brand_eco": brand_eco,
     }
 
     return render_to_response("database/details.html", context)

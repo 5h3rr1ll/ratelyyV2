@@ -8,11 +8,17 @@
 
 body {
   background: #34495e;
+  font-family: sans-serif;
+  font-size: 0.9em;
 }
 
 header {
   font-family: "Sacramento", Helvetica, sans-serif;
   font-size: 5em;
+}
+
+a:visited{
+  color:white;
 }
 
 .navbar{
@@ -59,9 +65,15 @@ input[type="text"] {
   color: white;
 }
 
+#Detailansicht a{
+  text-decoration: none;
+}
+
 li a{
   color: white;
   text-decoration: none;
+  font-family: sans-serif;
+  font-size: 0.9em;
 }
 
 li a:hover{
