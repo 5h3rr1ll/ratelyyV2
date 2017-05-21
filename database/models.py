@@ -12,6 +12,7 @@ class Concerns(models.Model):
     name = models.CharField(max_length=50)
     fair = models.IntegerField()
     eco = models.IntegerField()
+    url = models.CharField(max_length=50, null=True)
 
     class Meta:
         db_table = "Concerns"

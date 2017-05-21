@@ -36,6 +36,15 @@ table tr td{
   text-align: center;
 }
 
+table tr td a{
+  text-decoration: none;
+  color: white;
+}
+
+table tr td a:hover{
+  color: #333;
+}
+
 #name{
   text-align: center;
   color: white;
@@ -60,11 +69,6 @@ input[type="text"] {
 #Ergebnisliste {
   margin-top: 10px;
   text-align: center;
-}
-
-#color_search_results > li {
-  color: red;
-  width: 100%;
 }
 
 #Detailansicht {

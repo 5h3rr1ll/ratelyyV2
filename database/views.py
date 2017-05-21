@@ -102,6 +102,7 @@ def BrandDetails(request, brand_id):
     brand_fair = brand.fair
     brand_eco = brand.eco
     brand_url = brand.url
+    brand_concern_url = Concerns.objects.get(id=brand.concern.pk).url
 
     context = {
         "brand_id": brand.id,
@@ -111,6 +112,7 @@ def BrandDetails(request, brand_id):
         "brand_fair": brand_fair,
         "brand_eco": brand_eco,
         "brand_url": brand_url,
+        "brand_concern_url": brand_concern_url,
     }
 
     return render_to_response("database/details.html", context)
