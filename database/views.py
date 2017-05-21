@@ -69,9 +69,9 @@ def submit_search_from_ajax(request):
         # Ergbenis für Treffer in Tabelle Brands
         brand_query = Brands.objects.filter(name__contains=search_text)
         #Ergebenis für Treffer in Tabelle Konzerne
-        search_results2 = Concerns.objects.filter(name__contains=search_text)
+        concerns_query = Concerns.objects.filter(name__contains=search_text)
         #Ergebenis für Treffer in Tabelle Unternehmen
-        search_results3 = Companies.objects.filter(name__contains=search_text)
+        companies_query = Companies.objects.filter(name__contains=search_text)
 
     #print('search_text="' + search_text + '", results=' + str(search_results))
 
@@ -82,8 +82,8 @@ def submit_search_from_ajax(request):
         "search_text": search_text,
         "MIN_SEARCH_CHARS": MIN_SEARCH_CHARS,
         "search_results": brand_query,
-        "search_results2": search_results2,
-        "search_results3": search_results3,
+        "concerns_query": concerns_query,
+        "companies_query": companies_query,
     };
 
     return render_to_response("database/search_results_html_snippet.txt",
@@ -93,44 +93,27 @@ def BrandDetails(request, brand_id):
     brand = Brands.objects.get(id=brand_id)
     brand_name = brand.name
     brand_pic = brand.img
-    brand_concern = Concerns.objects.get(id=brand.concern_id).name
-    brand_company = Companies.objects.filter(id=brand.company_id)
+    '''
+    da bei den Marken noch keine Unternehmen einegtragen sind, wir hier noch
+    mit objects.filter gearbeietet, damit kein Fehler geworfen wird.
+    '''
+    brand_company = Companies.objects.filter(id=brand.company)
+    brand_concern = Concerns.objects.get(id=brand.concern.pk).name
     brand_fair = brand.fair
     brand_eco = brand.eco
+    brand_url = brand.url
 
     context = {
         "brand_id": brand.id,
         "brand_name": brand.name,
         "brand_pic": brand.img,
-        "brand_company": brand_company,
         "brand_concern": brand_concern,
         "brand_fair": brand_fair,
         "brand_eco": brand_eco,
+        "brand_url": brand_url,
     }
 
     return render_to_response("database/details.html", context)
-
-
-def BrandDetails(request, brand_id):
-    """Toggle "details" for a single brand, then refresh the databse page."""
-    brand = None
-    try:
-        #There's only one object with this id, but this returns a list
-        #of length one. Get the first (index 0)
-        brand = Brands.objects.get(id=brand_id)
-    except Brands.DoesNotExist as e:
-        raise  ValueError("Unknown brand.id=" + str(brand_id) + ". Original error: " + str(e))
-
-    context = {
-        "brand_id": brand.id,
-        "brand_name": brand.name,
-        "brand_pic": brand.img,
-    }
-
-    #Render the just-clicked-on brand-link.
-    return  render_to_response("database/details.html",
-                           context)
-
 
 def toggle_color_like(request, color_id):
     """Toggle "like" for a single color, then refresh the color-list page."""

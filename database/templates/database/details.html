@@ -3,11 +3,28 @@
 {% block details %}
   <div id="DetailsContent">
     <img src="{{brand_pic}}"></img><br>
-    Markenname: {{ brand_name }}<br>
-    Unternehmen: {{ brand_company }}<br>
-    Konzern: {{ brand_concern }}<br>
-    Fair: {% if brand_fair > 0 %}Ja{% endif %}Nein<br>
-    Öklogisch: {% if brand_eco > 0 %}Ja{% endif %}Nein<br>
+    <table align="center">
+      <tr>
+        <td id="colone">Markenname:</td>
+        <td><a href="{{brand_url}}" target="_blank"> {{ brand_name }} </td>
+      </tr>
+      <tr>
+        <td id="colone">Unternehmen:</td>
+        <td>{{ brand_company }}</td>
+      </tr>
+      <tr>
+        <td id="colone">Konzern:</td>
+        <td>{{ brand_concern }}</td>
+      </tr>
+      <tr>
+        <td id="colone">Fair?:</td>
+        <td>{% if brand_fair > 0 %} Ja {% else %} Nein {% endif %}</td>
+      </tr>
+      <tr>
+        <td id="colone">Öklogisch?:</td>
+        <td>{% if brand_eco > 0 %} Ja {% else %} Nein {% endif %}</td>
+      </tr>
+    </table>
     <h3><a href="http://localhost:8000/database/"> Neue Suche? Einfach hier klicken </a></h3>
   </div>
 {% endblock %}
