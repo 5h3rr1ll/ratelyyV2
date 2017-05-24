@@ -8,67 +8,142 @@ import re, sys
 
 
 # Create your models here.
-class Concerns(models.Model):
+class Concern(models.Model):
     name = models.CharField(max_length=50)
     fair = models.IntegerField()
     eco = models.IntegerField()
     url = models.CharField(max_length=50, null=True)
 
     class Meta:
-        db_table = "Concerns"
+        db_table = "Concern"
 
     def __str__(self):
         return self.name
 
 
-class Companies(models.Model):
+class New_Concern_by_Users(models.Model):
+    """
+    This table is for concerns users are looking up and can't find them in the
+    main concernces table. After checking the entries valid entries become
+    transfered to the main concerns table
+    """
     name = models.CharField(max_length=50)
     fair = models.IntegerField()
     eco = models.IntegerField()
-    concern = models.ForeignKey("Concerns", null=True)
+    url = models.CharField(max_length=50, null=True)
+    counter = models.CharField(max_length=1000, default=0)
 
     class Meta:
-        db_table = "Companies"
+        db_table = "newConcernByUsers"
 
     def __str__(self):
         return self.name
 
 
-class Brands(models.Model):
+class Company(models.Model):
+    name = models.CharField(max_length=50)
+    fair = models.IntegerField()
+    eco = models.IntegerField()
+    concern = models.ForeignKey("Concern", null=True)
+
+    class Meta:
+        db_table = "Company"
+
+    def __str__(self):
+        return self.name
+
+
+class New_Company_by_Users(models.Model):
+    """
+    This table is for companies users are looking up and can't find them in the
+    main concernces table. After checking the entries valid entries become
+    transfered to the main table.
+    """
+    name = models.CharField(max_length=50)
+    fair = models.IntegerField()
+    eco = models.IntegerField()
+    url = models.CharField(max_length=50, null=True)
+    counter = models.CharField(max_length=1000, default=0)
+
+    class Meta:
+        db_table = "newCompanyByUsers"
+
+    def __str__(self):
+        return self.name
+
+
+class Brand(models.Model):
     name = models.CharField(max_length=50, null=True)
     altName = models.CharField(max_length=50, null=True)
     fair = models.IntegerField()
     eco = models.IntegerField()
-    concern = models.ForeignKey("Concerns", null=True)
-    company = models.ForeignKey("Companies", null=True)
+    concern = models.ForeignKey("Concern", null=True)
+    company = models.ForeignKey("Company", null=True)
     url = models.CharField(max_length=50, null=True)
     img = models.CharField(max_length=50, null=True)
 
     class Meta:
-        db_table = "Brands"
+        db_table = "Brand"
 
     def __str__(self):
         return self.name
 
 
-class Products(models.Model):
+class New_Brand_by_Users(models.Model):
+    """
+    This table is for brands users are looking up and can't find them in the
+    main brand table. After checking the entries valid entries become
+    transfered to the main table
+    """
+    name = models.CharField(max_length=50)
+    fair = models.IntegerField()
+    eco = models.IntegerField()
+    url = models.CharField(max_length=50, null=True)
+    counter = models.CharField(max_length=1000, default=0)
+
+    class Meta:
+        db_table = "newBrandByUsers"
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
     name = models.CharField(max_length=50)
     ean = models.IntegerField(17)
     fair = models.IntegerField()
     eco = models.IntegerField()
-    company = models.ForeignKey("Companies", null=True)
-    concern = models.ForeignKey("Concerns", null=True)
+    company = models.ForeignKey("Company", null=True)
+    concern = models.ForeignKey("Concern", null=True)
 
     class Meta:
-        db_table = "Products"
+        db_table = "Product"
 
     def __str__(self):
         return self.name
 
 
-class brandsCrawler():
+class New_Product_by_Users(models.Model):
+    """
+    This table is for products users are looking up and can't find them in the
+    main brand table. After checking the entries valid entries become
+    transfered to the main table.
+    """
+    name = models.CharField(max_length=50)
+    fair = models.IntegerField()
+    eco = models.IntegerField()
+    url = models.CharField(max_length=50, null=True)
+    counter = models.CharField(max_length=1000, default=0)
 
-    def showCrawledBrands(self):
+    class Meta:
+        db_table = "newProductByUsers"
+
+    def __str__(self):
+        return self.name
+
+
+class Brands_Crawler():
+    def show_crawled_brand(self):
         """Dieser Funktion crawlt einmal durch alle Marken von Nestle und speichert
         fasst dabei alle Markennamen ab, indem der Crawler die alternantiven Titel
         der Bilder auf der jeweiligen Seite abfragt."""
@@ -122,7 +197,7 @@ class brandsCrawler():
         return(brandLst)
 
 
-    def saveBrands(self):
+    def save_brand(self):
         """Diese Funktion ruft die Funktion Crawler auf, jene eine Liste mit den
         zurück Marken von Nestlé zurück gibt. Diese Liste wird dann in die Datenbank
         gespeicehrt."""
@@ -131,17 +206,16 @@ class brandsCrawler():
 
         """um auf die vorangegangende Funktion in erhalb der Klasse zugreifen zu
         können, muss vor dem Funktionsaufruf das Schlüsselwort "self." stehen"""
-        brandLst = self.showCrawledBrands()
+        brandLst = self.showCrawledBrand()
 
         for brand in brandLst:
             print(brand)
-            obj, created = Brands.objects.get_or_create(name = brand, fair = 0,
-                eco = 0, concern = Concerns.objects.get(name="Nestle"))
+            obj, created = Brand.objects.get_or_create(name = brand, fair = 0,
+                eco = 0, concern = Concern.objects.get(name="Nestle"))
             print("Saved")
 
-class companyCrawler():
-
-    def showCompanies(self):
+class Company_Crawler():
+    def show_Company(self):
         """Dieser Funktion crawlt einmal die deutsche Nestle-Seite und speichert
         dabei alle deutschen Unternehmen und deren Markennamen, indem der Crawler
         die alternantiven Titel der Bilder auf der jeweiligen Seite abfragt."""
@@ -188,7 +262,7 @@ class companyCrawler():
         # print(companyLst)
         return(companyLst)
 
-    def saveCompanies(self):
+    def save_Company(self):
         """Dieser Funktion crawlt einmal die deutsche Nestle-Seite und speichert
         dabei alle deutschen Unternehmen, indem der Crawler die alternantiven Titel
         der Bilder auf der jeweiligen Seite abfragt. Die Funktion gibt eine Liste
@@ -225,7 +299,7 @@ class companyCrawler():
 
         ignorWords = ["Nestlé Marken", "Kaffee", "Schokoladen", []]
 
-        nestle = Concerns.objects.get(name="Nestle")
+        nestle = Concern.objects.get(name="Nestle")
 
         for name in allSpanTags:
             if name.string not in ignorWords and name.string is not None:
@@ -233,15 +307,14 @@ class companyCrawler():
 
         for i in companyLst:
             print(i)
-            # obj, created = Companies.objects.get_or_create(name = i, fair = 0, eco = 0, concern = nestle)
+            # obj, created = Company.objects.get_or_create(name = i, fair = 0, eco = 0, concern = nestle)
             print(i,"saved")
 
         # print("Das sind Nestles Firmen in Deutschland:","\n",", ".join(companyLst), "\n")
         return(companyLst)
 
 
-class NewCrawler():
-
+class New_brand_crawler():
     def save(self):
         """Dieser Funktion crawlt einmal durch alle Marken von Nestle und speichert
         fasst dabei alle Markennamen ab, indem der Crawler die alternantiven Titel
@@ -304,37 +377,149 @@ class NewCrawler():
             productTitel = allLi[li].span.span.string
             print("4",productTitel)
 
-            obj, created = Brands.objects.get_or_create(name = productTitel,
+            obj, created = Brand.objects.get_or_create(name = productTitel,
                 altName = bildAltTitel, url = urlZumHersteller, fair = 0,
-                eco = 0, concern = Concerns.objects.get(name="Nestle"), img = bildUrl)
-
-                # print("Saved")
-
-            # for prodName in soup.find_all("span", class_ = "title"):
-            #     for child in prodName.children:
-            #         if child.get("alt"):
-            #             brandLst.append(child.get("alt"))
-
-        # print(brandLst)
-        # return(brandLst)
+                eco = 0, concern = Concern.objects.get(name="Nestle"), img = bildUrl)
 
 
-    def saveBrands(self):
-        """Diese Funktion ruft die Funktion Crawler auf, jene eine Liste mit den
-        zurück Marken von Nestlé zurück gibt. Diese Liste wird dann in die Datenbank
-        gespeicehrt."""
+def add_new_concern(name=None, fair=None, eco=None, url=None):
+    counter = 0
+    if name == None:
+        print("Du hast keinen Namen eingegeben")
+        return
+    if fair == "Ja":
+        fair = 1
+    else:
+        fair = 0
+    if eco == "Ja":
+        eco = 1
+    else:
+        eco = 0
+    if url == None:
+        url = "Null"
+    print("Gesucht wird:",name)
+    try:
+        print("Sind im Try-Abschnitt")
+        Concern.objects.get(name=name)
+        return "Existiert bereits"
+    except Concern.DoesNotExist as e:
+        try:
+            New_Concern_by_Users.objects.get(name=name)
+            concern = New_Concern_by_Users.objects.get(name=name)
+            counter = int(concern.counter)
+            counter += 1
+            concern.counter = counter
+            concern.save()
+            print("Der Konzern wurde bereits angefragt, schon mal wird es ihn in der",
+                "Datenbank geben. Danke Dir!")
+        except New_Concern_by_Users.DoesNotExist as e:
+            print("Exception wurde Abgefangen:")
+            New_Concern_by_Users.objects.create(name=name, fair=fair, eco=eco, url=url)
+            return "Wurde neu angelegt. Danke dir!"
 
-        print("Sammle Nestle-Marken")
+def add_new_company(name=None, fair=None, eco=None, url=None):
+    counter = 0
+    if name == None:
+        print("Du hast keinen Namen eingegeben")
+        return
+    if fair == "Ja":
+        fair = 1
+    else:
+        fair = 0
+    if eco == "Ja":
+        eco = 1
+    else:
+        eco = 0
+    if url == None:
+        url = "Null"
+    print("Gesucht wird:",name)
+    try:
+        print("Sind im Try-Abschnitt")
+        Company.objects.get(name=name)
+        return "Existiert bereits"
+    except Company.DoesNotExist as e:
+        try:
+            New_Company_by_Users.objects.get(name=name)
+            company = New_Company_by_Users.objects.get(name=name)
+            counter = int(company.counter)
+            counter += 1
+            company.counter = counter
+            company.save()
+            print("Das Unternehmen wurde bereits angefragt, schon mal wird es das"
+                " Unternehemn in der Datenbank geben. Danke Dir!")
+        except New_Company_by_Users.DoesNotExist as e:
+            print("Exception wurde Abgefangen:")
+            New_Company_by_Users.objects.create(name=name, fair=fair, eco=eco, url=url)
+            return "Wurde neu angelegt. Danke dir!"
 
-        """um auf die vorangegangende Funktion in erhalb der Klasse zugreifen zu
-        können, muss vor dem Funktionsaufruf das Schlüsselwort "self." stehen"""
-        brandLst = self.showCrawledBrands()
 
-        for brand in brandLst:
-            print(brand)
-            obj, created = Brands.objects.get_or_create(name = brand, fair = 0,
-                eco = 0, concern = Concerns.objects.get(name="Nestle"))
-            print("Saved")
+def add_new_brand(name=None, fair=None, eco=None, url=None):
+    counter = 0
+    if name == None:
+        print("Du hast keinen Namen eingegeben")
+        return
+    if fair == "Ja":
+        fair = 1
+    else:
+        fair = 0
+    if eco == "Ja":
+        eco = 1
+    else:
+        eco = 0
+    if url == None:
+        url = "Null"
+    print("Gesucht wird:",name)
+    try:
+        print("Sind im Try-Abschnitt")
+        Brand.objects.get(name=name)
+        return "Existiert bereits"
+    except Brand.DoesNotExist as e:
+        try:
+            New_Brand_by_Users.objects.get(name=name)
+            brand = New_Brand_by_Users.objects.get(name=name)
+            counter = int(brand.counter)
+            counter += 1
+            brand.counter = counter
+            brand.save()
+            print("Das Marke wurde bereits angefragt, schon bald wird es sie in der",
+                "Datenbank geben. Danke Dir!")
+        except New_Brand_by_Users.DoesNotExist as e:
+            print("Exception wurde Abgefangen:")
+            New_Brand_by_Users.objects.create(name=name, fair=fair, eco=eco, url=url)
+            return "Wurde neu angelegt. Danke dir!"
 
-def newConcern(name, fair, eco, url):
-    Concerns.objects.get_or_create(name)
+
+def add_new_product(name=None, ean=None, fair=None, eco=None, url=None):
+    counter = 0
+    if name == None:
+        print("Du hast keinen Namen eingegeben")
+        return
+    if fair == "Ja":
+        fair = 1
+    else:
+        fair = 0
+    if eco == "Ja":
+        eco = 1
+    else:
+        eco = 0
+    if url == None:
+        url = "Null"
+    print("Gesucht wird:",name)
+    try:
+        print("Sind im Try-Abschnitt")
+        Product.objects.get(name=name)
+        return "Existiert bereits"
+    except Product.DoesNotExist as e:
+        try:
+            New_Product_by_Users.objects.get(name=name)
+            brand = New_Product_by_Users.objects.get(name=name)
+            counter = int(brand.counter)
+            counter += 1
+            brand.counter = counter
+            brand.save()
+            print("Das Marke wurde bereits angefragt, schon bald wird es sie in der",
+                "Datenbank geben. Danke Dir!")
+        except New_Product_by_Users.DoesNotExist as e:
+            print("Exception wurde Abgefangen:")
+            New_Product_by_Users.objects.create(name=name, fair=fair, eco=eco, url=url)
+            return "Wurde neu angelegt. Danke dir!"
