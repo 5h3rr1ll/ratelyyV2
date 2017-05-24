@@ -65,20 +65,6 @@ class Products(models.Model):
     def __str__(self):
         return self.name
 
-# class Alles(models.Model):
-#     name = models.()
-#     ean = models.IntegerField(17)
-#     fair = models.IntegerField()
-#     eco = models.IntegerField()
-#     company = models.ForeignKey("Companies", null=True)
-#     concern = models.ForeignKey("Concerns", null=True)
-#
-#     class Meta:
-#         db_table = "Alles"
-#
-#     def __str__(self):
-#         return self.name
-
 
 class brandsCrawler():
 
@@ -349,3 +335,9 @@ class NewCrawler():
             obj, created = Brands.objects.get_or_create(name = brand, fair = 0,
                 eco = 0, concern = Concerns.objects.get(name="Nestle"))
             print("Saved")
+
+def newConcern(name=None, fair=None, eco=None, url=None):
+    name = models.CharField(max_length=50)
+    fair = models.IntegerField()
+    eco = models.IntegerField()
+    url = models.CharField(max_length=50, null=True)
