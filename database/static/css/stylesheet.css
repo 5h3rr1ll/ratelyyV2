@@ -8,6 +8,8 @@
 
 body {
   background: #34495e;
+  font-family: sans-serif;
+  font-size: 0.9em;
 }
 
 header {
@@ -15,12 +17,32 @@ header {
   font-size: 5em;
 }
 
+a:visited{
+  color:white;
+}
+
 .navbar{
 
 }
 
+#colone{
+  text-align: right;
+}
 h1 {
   margin: 0;
+}
+
+table tr td{
+  text-align: center;
+}
+
+table tr td a{
+  text-decoration: none;
+  color: white;
+}
+
+table tr td a:hover{
+  color: #333;
 }
 
 #name{
@@ -49,19 +71,20 @@ input[type="text"] {
   text-align: center;
 }
 
-#color_search_results > li {
-  color: red;
-  width: 100%;
-}
-
 #Detailansicht {
   text-align: center;
   color: white;
 }
 
+#Detailansicht a{
+  text-decoration: none;
+}
+
 li a{
   color: white;
   text-decoration: none;
+  font-family: sans-serif;
+  font-size: 0.9em;
 }
 
 li a:hover{

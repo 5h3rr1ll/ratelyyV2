@@ -2,8 +2,29 @@
 
 {% block details %}
   <div id="DetailsContent">
-    Brand ID: {{brand_id}}<br>
-    Markenname: {{brand_name}}<br>
-    <img src="{{brand_pic}}"></img>
-  </di>
+    <img src="{{brand_pic}}"></img><br>
+    <table align="center">
+      <tr>
+        <td id="colone">Markenname:</td>
+        <td><a href="{{brand_url}}" target="_blank"> {{ brand_name }} </td>
+      </tr>
+      <tr>
+        <td id="colone">Unternehmen:</td>
+        <td>{{ brand_company }}</td>
+      </tr>
+      <tr>
+        <td id="colone">Konzern:</td>
+        <td><a href="{{ brand_concern_url }}" target="_blank"> {{ brand_concern }} </td>
+      </tr>
+      <tr>
+        <td id="colone">Fair?:</td>
+        <td>{% if brand_fair > 0 %} Ja {% else %}<a href="https://www.behindthebrands.org/brands/{{brand_concern}}" target='_blank'> Nein {% endif %}</td>
+      </tr>
+      <tr>
+        <td id="colone">Öklogisch?:</td>
+        <td>{% if brand_eco > 0 %} Ja {% else %}<a href="https://www.behindthebrands.org/brands/{{brand_concern}}" target='_blank'> Nein {% endif %}</td>
+      </tr>
+    </table>
+    <h3><a href="http://localhost:8000/database/"> Neue Suche? Einfach hier klicken</h3>
+  </div>
 {% endblock %}
