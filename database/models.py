@@ -336,8 +336,5 @@ class NewCrawler():
                 eco = 0, concern = Concerns.objects.get(name="Nestle"))
             print("Saved")
 
-def newConcern(name=None, fair=None, eco=None, url=None):
-    name = models.CharField(max_length=50)
-    fair = models.IntegerField()
-    eco = models.IntegerField()
-    url = models.CharField(max_length=50, null=True)
+def newConcern(name, fair, eco, url):
+    Concerns.objects.get_or_create(name)
