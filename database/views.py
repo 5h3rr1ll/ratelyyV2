@@ -1,6 +1,6 @@
 from django.shortcuts     import render_to_response
 from django.views.generic import ListView
-from database.models   import Concerns, Companies, Brands
+from database.models   import Concern, Company, Brand, Product
 
 MIN_SEARCH_CHARS = 1
 """
@@ -13,7 +13,7 @@ class Database(ListView):
     Displays all Concerns, Companies, Brands and in the future also Products, in
     a table with only one column.
     """
-    model = Brands
+    model = Brand
     context_object_name = "colors"
     template_name = "database/index.html"
 
@@ -66,12 +66,12 @@ def submit_search_from_ajax(request):
     search_results = []
 
     if(search_text != ""):
-        # Ergbenis für Treffer in Tabelle Brands
-        brand_query = Brands.objects.filter(name__contains=search_text)
+        # Ergbenis für Treffer in Tabelle Brand
+        brands_query = Brand.objects.filter(name__contains=search_text)
         #Ergebenis für Treffer in Tabelle Konzerne
-        concerns_query = Concerns.objects.filter(name__contains=search_text)
+        concerns_query = Concern.objects.filter(name__contains=search_text)
         #Ergebenis für Treffer in Tabelle Unternehmen
-        companies_query = Companies.objects.filter(name__contains=search_text)
+        companies_query = Company.objects.filter(name__contains=search_text)
 
     #print('search_text="' + search_text + '", results=' + str(search_results))
 
@@ -81,7 +81,7 @@ def submit_search_from_ajax(request):
     context = {
         "search_text": search_text,
         "MIN_SEARCH_CHARS": MIN_SEARCH_CHARS,
-        "search_results": brand_query,
+        "search_results": brands_query,
         "concerns_query": concerns_query,
         "companies_query": companies_query,
     };
@@ -90,19 +90,19 @@ def submit_search_from_ajax(request):
                                context)
 
 def BrandDetails(request, brand_id):
-    brand = Brands.objects.get(id=brand_id)
+    brand = Brand.objects.get(id=brand_id)
     brand_name = brand.name
     brand_pic = brand.img
     '''
     da bei den Marken noch keine Unternehmen einegtragen sind, wir hier noch
     mit objects.filter gearbeietet, damit kein Fehler geworfen wird.
     '''
-    brand_company = Companies.objects.filter(id=brand.company)
-    brand_concern = Concerns.objects.get(id=brand.concern.pk).name
+    brand_company = Company.objects.filter(id=brand.company)
+    brand_concern = Concern.objects.get(id=brand.concern.pk).name
     brand_fair = brand.fair
     brand_eco = brand.eco
     brand_url = brand.url
-    brand_concern_url = Concerns.objects.get(id=brand.concern.pk).url
+    brand_concern_url = Concern.objects.get(id=brand.concern.pk).url
 
     context = {
         "brand_id": brand.id,
@@ -123,8 +123,8 @@ def toggle_color_like(request, color_id):
     try:
         #There's only one object with this id, but this returns a list
         #of length one. Get the first (index 0)
-        color = Brands.objects.filter(id=color_id)[0]
-    except Brands.DoesNotExist as e:
+        color = Brand.objects.filter(id=color_id)[0]
+    except Brand.DoesNotExist as e:
         raise  ValueError("Unknown color.id=" + str(color_id) + ". Original error: " + str(e))
 
     #print("pre-toggle:  color_id=" + str(color_id) + ", color.is_favorited=" + str(color.is_favorited) + "")
