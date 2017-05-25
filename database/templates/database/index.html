@@ -57,16 +57,6 @@
 
             //The url to submit the search form. From databae.urls
             var SUBMIT_URL = "{% url 'database:search' %}";
-
-            /*
-               the url to toggle the like. From database.urls
-
-               Since an id must be provided to the Django url, give it a
-               bogus one, then immediately lop it off (along with the
-               ending '/'). It is re-appended by the JavaScript.
-            */
-            var LIKE_URL_PRE_ID = "{% url 'database:toggle_color_like' color_id='999999999' %}"
-            LIKE_URL_PRE_ID = LIKE_URL_PRE_ID.substring(0, LIKE_URL_PRE_ID.length - "999999999/".length);
          </script>
          <script type='text/javascript' src="{% static 'js/color_ajax_search.js' %}"></script>
          <script type='text/javascript' src="{% static 'js/color_ajax_main.js' %}"></script>
