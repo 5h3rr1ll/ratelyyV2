@@ -41,7 +41,7 @@ class New_Concern_by_Users(models.Model):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True)
     fair = models.IntegerField()
     eco = models.IntegerField()
     concern = models.ForeignKey("Concern", null=True)
@@ -307,7 +307,7 @@ class Company_Crawler():
 
         for i in companyLst:
             print(i)
-            # obj, created = Company.objects.get_or_create(name = i, fair = 0, eco = 0, concern = nestle)
+            obj, created = Company.objects.get_or_create(name = i, fair = 0, eco = 0, concern = nestle)
             print(i,"saved")
 
         # print("Das sind Nestles Firmen in Deutschland:","\n",", ".join(companyLst), "\n")
@@ -379,7 +379,90 @@ class New_brand_crawler():
 
             obj, created = Brand.objects.get_or_create(name = productTitel,
                 altName = bildAltTitel, url = urlZumHersteller, fair = 0,
-                eco = 0, concern = Concern.objects.get(name="Nestle"), img = bildUrl)
+                """
+                Um die Company-ID zu bekommen, muss ein Dictionary angeblegt werden
+                indem durch die Key und deren Values interiert werden kann und wenn
+                der Produktname im Value gefunden wurde, muss der Key hier als
+                name angegeben werden
+                """
+                eco = 0, concern = Concern.objects.get(name="Nestle"), img = bildUrl, company=Company.objects.get(name= !!!))
+
+class New_Company_Crawler():
+    def save():
+        """
+        Diese Funktion crawlt einmal die deutsche Nestle-Seite und speichert
+        dabei alle deutschen Nestele-Unternehmen und die Marken zu den Unternehmen.
+        Die Daten werden in einem Dictionary abgelegt, wo der Unternehensname den
+        Schlüssel bilet
+        """
+
+        # url = input("Gibt die URL ohen Protokoll ein (ohne http:// bzw. https://): ")
+        url = "http://www.nestle.de/unternehmen/struktur/marken"
+        #filter nur das Protokoll inkl. :// heraus
+        regExURLProto = r"^[a-z]*:\/\/"
+        #filter alles was hinter dem protokoll :// kommt
+        regExURLAbPro = r"(?:^[a-z]*:\/\/)(.*)"
+        #Filter die Domain z.B. www.nestle.de, jedoch in zwei Teilen, in (www) und
+        #in (nestle.de). So kann man in der URL seperat darauf prüfen ob ein (www)
+        #benutzt wurde.
+        regExDomain = r"(w{1,}\.)([a-zA-Z]+\.\w+)"
+        #hier wird nur das Protkoll mit :// gespeichert, z.B. http://
+        urlPro = re.findall(regExURLProto, url)[0]
+        #hier wird alles von der URL nach dem :// gespeichert, z.B. www.nestle.de
+        restUrl = re.findall(regExURLAbPro, url)
+        #hier soll nur die Domain gespichert werden
+        domain = re.findall(regExDomain, url)
+        # durch regex wird die Domain in zwei Teile geteilt, in der nächsten Zeile
+        # setze ich die Domain wieder zusammen.
+        domain = domain[0][0]+ domain[0][1]
+        #diese Variable speichert nacher die Markennamen
+        companyLst = []
+
+        url = urlPro + domain + "/unternehmen/struktur/marken"
+        siteObject = request.urlopen(url)
+        html = siteObject.read().decode()
+        soup = BeautifulSoup(html, "html.parser")
+
+        divs = soup.div(class_ = "as-structure")
+
+        divsLst = divs[0].find_all("div")
+
+        company = ""
+        companyAndBrand = {
+
+        }
+        flag = True
+
+        ignorWords = ["Nestlé Marken", "Kaffee", "Schokoladen", []]
+
+        for div in divsLst:
+            try:
+                if div.span.get("class")[0] == "as-struct" and div.span.string not in ignorWords:
+                    company = div.span.string
+                    companyAndBrand[div.span.string]=[]
+            except Exception as e:
+                try:
+                    if div.get("class")[1] == 'as-struct-content-level2':
+                        for brand in div.find_all("img"):
+                            name = brand.get("alt")
+                            img = urlPro + domain + brand.get("src")
+                            companyAndBrand[company].append([name, img])
+                except Exception as e:
+                    pass
+                pass
+
+        nestle = Concern.objects.get(name="Nestle")
+
+        try:
+            for company in list(companyAndBrand.keys()):
+                obj, created = Company.objects.get_or_create(name = company,
+                    fair = 0, eco = 0, concern = nestle)
+        except Exception as e:
+            # um zu erkennen welcher Eintrag Fehlerhaft ist.
+            # obj, created = Company.objects.get_or_create(name = companyAndBrand[None],
+            #     fair = 0, eco = 0, concern = nestle)
+            print(str(e))
+            pass
 
 
 def add_new_concern(name=None, fair=None, eco=None, url=None):
