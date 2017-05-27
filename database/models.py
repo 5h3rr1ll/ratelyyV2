@@ -5,6 +5,7 @@ from urllib import request, parse
 from string import ascii_uppercase
 from bs4 import BeautifulSoup
 import re, sys
+import json
 
 
 # Create your models here.
@@ -314,7 +315,7 @@ class Company_Crawler():
         return(companyLst)
 
 
-class New_brand_crawler():
+class New_Brand_Crawler():
     def save(self):
         """Dieser Funktion crawlt einmal durch alle Marken von Nestle und speichert
         fasst dabei alle Markennamen ab, indem der Crawler die alternantiven Titel
@@ -379,13 +380,11 @@ class New_brand_crawler():
 
             obj, created = Brand.objects.get_or_create(name = productTitel,
                 altName = bildAltTitel, url = urlZumHersteller, fair = 0,
-                """
-                Um die Company-ID zu bekommen, muss ein Dictionary angeblegt werden
-                indem durch die Key und deren Values interiert werden kann und wenn
-                der Produktname im Value gefunden wurde, muss der Key hier als
-                name angegeben werden
-                """
-                eco = 0, concern = Concern.objects.get(name="Nestle"), img = bildUrl, company=Company.objects.get(name= !!!))
+                eco = 0, concern = Concern.objects.get(name="Nestle"), img = bildUrl)
+
+    def add_company_to_brand():
+        pass
+
 
 class New_Company_Crawler():
     def save():
@@ -463,6 +462,15 @@ class New_Company_Crawler():
             #     fair = 0, eco = 0, concern = nestle)
             print(str(e))
             pass
+
+        """
+        to save crwaled companies and related brands in a textfile, so other functions
+        can use the informations also, like the add_company_to_brand function of
+        New_Brand_Crawler.
+        """
+        companyAndBrand = json.dumps(companyAndBrand, ensure_ascii=False)
+        with open("company_brand_dic.txt","w") as f:
+            f.write(companyAndBrand)
 
 
 def add_new_concern(name=None, fair=None, eco=None, url=None):
