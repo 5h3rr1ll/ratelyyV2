@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django.db import models
 
 from urllib.parse import urlparse
@@ -42,7 +45,7 @@ class New_Concern_by_Users(models.Model):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=50, null=True)
+    name = models.CharField(max_length=50, null=True, default="n.a.")
     fair = models.IntegerField()
     eco = models.IntegerField()
     concern = models.ForeignKey("Concern", null=True)
@@ -316,7 +319,7 @@ class Company_Crawler():
 
 
 class New_Brand_Crawler():
-    def save(self):
+    def save():
         """Dieser Funktion crawlt einmal durch alle Marken von Nestle und speichert
         fasst dabei alle Markennamen ab, indem der Crawler die alternantiven Titel
         der Bilder auf der jeweiligen Seite abfragt."""
@@ -369,22 +372,33 @@ class New_Brand_Crawler():
                 allLi.append(allLiEven[i])
 
         for li in range(len(allLi)):
-            urlZumHersteller = urlPro + domain + allLi[li].a["href"]
-            print("1",urlPro + domain + urlZumHersteller)
-            bildAltTitel = allLi[li].img["alt"]
-            print("2",bildAltTitel)
-            bildUrl= urlPro + domain + allLi[li].img["src"]
-            print("3",urlPro + domain + bildUrl)
-            productTitel = allLi[li].span.span.string
-            print("4",productTitel)
+            hersteller_url = urlPro + domain + allLi[li].a["href"]
+            print("1",urlPro + domain + hersteller_url)
+            alt = allLi[li].img["alt"]
+            print("2",alt)
+            img= urlPro + domain + allLi[li].img["src"]
+            print("3",urlPro + domain + img)
+            name = allLi[li].span.span.string
+            if name == None:
+                name = alt
+            print("4",name)
 
-            obj, created = Brand.objects.get_or_create(name = productTitel,
-                altName = bildAltTitel, url = urlZumHersteller, fair = 0,
-                eco = 0, concern = Concern.objects.get(name="Nestle"), img = bildUrl)
+            obj, created = Brand.objects.get_or_create(name = name,
+                altName = alt, url = hersteller_url, fair = 0,
+                eco = 0, concern = Concern.objects.get(name="Nestle"), img = img)
 
     def add_company_to_brand():
-        pass
+        with open("company_brand_dic.txt","r+") as f:
+            company_brand_dic = json.loads(f.read())
 
+        for brand in Brand.objects.all():
+            for company in company_brand_dic:
+                for entry in company_brand_dic[company]:
+                    print(type(brand))
+                    brand = brand.name
+                    print(type(brand))
+                    if brand in entry:
+                        print(company.name)
 
 class New_Company_Crawler():
     def save():
@@ -438,13 +452,13 @@ class New_Company_Crawler():
             try:
                 if div.span.get("class")[0] == "as-struct" and div.span.string not in ignorWords:
                     company = div.span.string
+                    img = urlPro + domain + brand.get("src")
                     companyAndBrand[div.span.string]=[]
             except Exception as e:
                 try:
                     if div.get("class")[1] == 'as-struct-content-level2':
                         for brand in div.find_all("img"):
                             name = brand.get("alt")
-                            img = urlPro + domain + brand.get("src")
                             companyAndBrand[company].append([name, img])
                 except Exception as e:
                     pass
@@ -466,10 +480,11 @@ class New_Company_Crawler():
         """
         to save crwaled companies and related brands in a textfile, so other functions
         can use the informations also, like the add_company_to_brand function of
-        New_Brand_Crawler.
+        New_Brand_Crawler. Needed to set "ensure_ascii" to False, cause of all
+        é and stuff like that.
         """
         companyAndBrand = json.dumps(companyAndBrand, ensure_ascii=False)
-        with open("company_brand_dic.txt","w") as f:
+        with open("company_brand_dic.txt","w+") as f:
             f.write(companyAndBrand)
 
 
