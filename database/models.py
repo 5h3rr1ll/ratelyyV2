@@ -392,13 +392,16 @@ class New_Brand_Crawler():
             company_brand_dic = json.loads(f.read())
 
         for brand in Brand.objects.all():
+            brandStr = str(brand.name).title()
             for company in company_brand_dic:
                 for entry in company_brand_dic[company]:
-                    print(type(brand))
-                    brand = brand.name
-                    print(type(brand))
-                    if brand in entry:
-                        print(company.name)
+                    if brandStr in entry:
+                        try:
+                            brand.company_id = Company.objects.get(name=company).id
+                            brand.save()
+                        except Exception as e:
+                            print(company, str(e))
+                            pass
 
 class New_Company_Crawler():
     def save():
@@ -451,15 +454,17 @@ class New_Company_Crawler():
         for div in divsLst:
             try:
                 if div.span.get("class")[0] == "as-struct" and div.span.string not in ignorWords:
-                    company = div.span.string
-                    img = urlPro + domain + brand.get("src")
+                    name = div.span.string
                     companyAndBrand[div.span.string]=[]
             except Exception as e:
                 try:
                     if div.get("class")[1] == 'as-struct-content-level2':
                         for brand in div.find_all("img"):
                             name = brand.get("alt")
+                            img = urlPro + domain + brand.get("src")
                             companyAndBrand[company].append([name, img])
+                            obj, created = Brand.objects.get_or_create(name = name,
+                                fair = 0, eco = 0, concern = nestle, img=img)
                 except Exception as e:
                     pass
                 pass
@@ -468,7 +473,7 @@ class New_Company_Crawler():
 
         try:
             for company in list(companyAndBrand.keys()):
-                obj, created = Company.objects.get_or_create(name = company,
+                obj, created = Company.objects.get_or_create(name = name,
                     fair = 0, eco = 0, concern = nestle)
         except Exception as e:
             # um zu erkennen welcher Eintrag Fehlerhaft ist.

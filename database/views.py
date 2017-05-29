@@ -97,7 +97,7 @@ def BrandDetails(request, brand_id):
     da bei den Marken noch keine Unternehmen einegtragen sind, wir hier noch
     mit objects.filter gearbeietet, damit kein Fehler geworfen wird.
     '''
-    brand_company = Company.objects.filter(id=brand.company)
+    brand_company = Company.objects.get(id=brand.company).name
     brand_concern = Concern.objects.get(id=brand.concern.pk).name
     brand_fair = brand.fair
     brand_eco = brand.eco
@@ -113,6 +113,7 @@ def BrandDetails(request, brand_id):
         "brand_eco": brand_eco,
         "brand_url": brand_url,
         "brand_concern_url": brand_concern_url,
+        "brand_company": brand_company,
     }
 
     return render_to_response("database/details.html", context)
