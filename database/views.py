@@ -93,11 +93,10 @@ def BrandDetails(request, brand_id):
     brand = Brand.objects.get(id=brand_id)
     brand_name = brand.name
     brand_pic = brand.img
-    '''
-    da bei den Marken noch keine Unternehmen einegtragen sind, wir hier noch
-    mit objects.filter gearbeietet, damit kein Fehler geworfen wird.
-    '''
-    brand_company = Company.objects.get(id=brand.company).name
+    try:
+        brand_company = Company.objects.get(id=brand.company_id).name
+    except Exception as e:
+        brand_company = "n.v."
     brand_concern = Concern.objects.get(id=brand.concern.pk).name
     brand_fair = brand.fair
     brand_eco = brand.eco

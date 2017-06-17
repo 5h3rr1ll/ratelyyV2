@@ -15,14 +15,52 @@ body {
 header {
   font-family: "Sacramento", Helvetica, sans-serif;
   font-size: 5em;
+  margin-top: 2em;
 }
 
 a:visited{
   color:white;
 }
 
-.navbar{
+div#main.navbar{
+  background: #34496e;
+}
 
+div.nav{
+  padding-top: 30px;
+}
+
+.navbar{
+  overflow: hidden;
+  /* background-color: #333;*/
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  text-align: center;
+}
+
+div.nav a{
+  margin-top: 10px;
+}
+
+.nav {
+  display: inline-block;
+  *display:inline; /* for IE7*/
+  *zoom:1;/* for IE7*/
+  min-width:100px;
+  min-height:50px;
+  margin-right:10px;
+  white-space:normal;
+  text-align: center;
+}
+
+.nav a {
+  padding: 0px 0px 10px 0px;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  color: #333;
 }
 
 #colone{
