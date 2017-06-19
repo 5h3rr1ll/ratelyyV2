@@ -1,0 +1,12 @@
+{% extends "database/unternehmen-index.html" %}
+
+{% block unternehmen %}
+{% for unternehmung in unternehmen %}
+        <div>
+          {{ unternehmung.name }}
+          {{ unternehmung.fair }}
+          {{ unternehmung.eco }}
+          {{ unternehmung.url }}
+        </div>
+{% endfor %}
+{% endblock %}

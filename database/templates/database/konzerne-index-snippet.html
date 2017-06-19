@@ -1,0 +1,12 @@
+{% extends "database/konzerne-index.html" %}
+
+{% block konzerne %}
+{% for konzern in konzerne %}
+        <div>
+          {{ konzern.name }}
+          {{ konzern.fair }}
+          {{ konzern.eco }}
+          {{ konzern.url }}
+        </div>
+{% endfor %}
+{% endblock %}

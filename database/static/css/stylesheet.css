@@ -137,6 +137,15 @@ p {
   color: white;
 }
 
+.markenContainer{
+  float:left;
+  width: 33.33333%;
+  height: 184px;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 50px;
+}
+
 @media screen and (max-width: 1025px) {
 	.container > header {
 		margin: 0 auto;

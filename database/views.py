@@ -117,6 +117,17 @@ def BrandDetails(request, brand_id):
 
     return render_to_response("database/details.html", context)
 
+def Konzerne(request):
+    return render_to_response("database/konzerne-index.html")
+
+def KonzernListe(request, buchstabe):
+    konzerne = Concern.objects.filter(name__startswith=buchstabe)
+    context = {
+        "konzerne":konzerne,
+    }
+    return render_to_response("database/konzerne-index-snippet.html", context)
+
+
 def toggle_color_like(request, color_id):
     """Toggle "like" for a single color, then refresh the color-list page."""
     color = None
@@ -137,3 +148,23 @@ def toggle_color_like(request, color_id):
     #Render the just-clicked-on like-button.
     return  render_to_response("database/color_like_link__html_snippet.txt",
                            {"color": color})
+
+def Unternehmen(request):
+    return render_to_response("database/unternehmen-index.html")
+
+def UnternehmenListe(request, buchstabe):
+    unternehmen = Company.objects.filter(name__startswith=buchstabe)
+    context = {
+        "unternehmen":unternehmen,
+    }
+    return render_to_response("database/unternehmen-index-snippet.html", context)
+
+def Marken(request):
+    return render_to_response("database/marken-index.html")
+
+def MarkenListe(request, buchstabe):
+    marken = Brand.objects.filter(name__startswith=buchstabe)
+    context = {
+        "marken":marken,
+    }
+    return render_to_response("database/marken-index-snippet.html", context)

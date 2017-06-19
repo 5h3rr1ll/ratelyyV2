@@ -1,0 +1,43 @@
+{% extends "database/index.html" %}
+
+{% block details %}
+  <div class="mainframe">
+    <div id="abisz">
+      <span>
+        <!-- schleife schreibeun um es auf eine Zeile zu reduzieren. Liste mit Buchstaben
+        via context übergeben und drüber intererieren mit prüfung ob hinter dem Buchstaben
+        Ergebinsse liegen, ansonsten Link deaktierene-->
+        <a href="{% url 'database:uListe' buchstabe='a' %}"> A </a>
+        <a href="{% url 'database:uListe' buchstabe='b' %}"> B </a>
+        <a href="{% url 'database:uListe' buchstabe='c' %}"> C </a>
+        <a href="{% url 'database:uListe' buchstabe='d' %}"> D </a>
+        <a href="{% url 'database:uListe' buchstabe='e' %}"> E </a>
+        <a href="{% url 'database:uListe' buchstabe='f' %}"> F </a>
+        <a href="{% url 'database:uListe' buchstabe='g' %}"> G </a>
+        <a href="{% url 'database:uListe' buchstabe='h' %}"> H </a>
+        <a href="{% url 'database:uListe' buchstabe='i' %}"> I </a>
+        <a href="{% url 'database:uListe' buchstabe='j' %}"> J </a>
+        <a href="{% url 'database:uListe' buchstabe='k' %}"> K </a>
+        <a href="{% url 'database:uListe' buchstabe='l' %}"> L </a>
+        <a href="{% url 'database:uListe' buchstabe='m' %}"> M </a>
+        <a href="{% url 'database:uListe' buchstabe='n' %}"> N </a>
+        <a href="{% url 'database:uListe' buchstabe='o' %}"> O </a>
+        <a href="{% url 'database:uListe' buchstabe='p' %}"> P </a>
+        <a href="{% url 'database:uListe' buchstabe='q' %}"> Q </a>
+        <a href="{% url 'database:uListe' buchstabe='r' %}"> R </a>
+        <a href="{% url 'database:uListe' buchstabe='s' %}"> S </a>
+        <a href="{% url 'database:uListe' buchstabe='t' %}"> T </a>
+        <a href="{% url 'database:uListe' buchstabe='u' %}"> U </a>
+        <a href="{% url 'database:uListe' buchstabe='v' %}"> V </a>
+        <a href="{% url 'database:uListe' buchstabe='w' %}"> W </a>
+        <a href="{% url 'database:uListe' buchstabe='x' %}"> X </a>
+        <a href="{% url 'database:uListe' buchstabe='y' %}"> Y </a>
+        <a href="{% url 'database:uListe' buchstabe='z' %}"> Z </a>
+      </span>
+    </div>
+  </div>
+
+    {% block unternehmen %}
+    {% endblock %}
+
+{% endblock %}

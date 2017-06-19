@@ -1,0 +1,17 @@
+{% extends "database/index.html" %}
+
+{% block details %}
+
+  <div class="mainframe">
+    <div id="abisz">
+      <span>A - B - C - D - E - F - G - H - I - H - J - K - L - M -
+        <a href="{% url 'database:kListe' buchstabe='n' %}"> N </a>
+        - O - P - Q - R - S - T - U - V - W - X - Y - Z
+      </span>
+    </div>
+  </div>
+
+    {% block konzerne %}
+    {% endblock %}
+
+{% endblock %}

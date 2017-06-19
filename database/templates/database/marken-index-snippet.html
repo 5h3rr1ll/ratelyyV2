@@ -1,0 +1,15 @@
+{% extends "database/marken-index.html" %}
+
+{% block marken %}
+{% for marke in marken %}
+        <div class="markenContainer">
+          <span><img src="{{ marke.img }}"></span><br>
+          <span>{{ marke.name }}</span><br>
+          <span>Fair?:{% if marke.fair > 0 %} Ja! {% else %} Nein{% endif %}</span><br>
+          <span>Öklogisch?:{% if marke.eco > 0 %} Ja! {% else %} Nein! {% endif %}</span><br>
+          <span>{{ marke.concern }}</span><br>
+          <span>{{ marke.company }}</span><br>
+          <span><a href="{{ marke.url }}">Zur Hersteller-Seite</a></span>
+        </div>
+{% endfor %}
+{% endblock %}
